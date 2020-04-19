@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"0a1v37.coding-pages.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1.排序模拟枚举  复杂度  一般（最坏）复杂度 ：记号为 O(……) 均摊复杂度  \qquad\quad\, ：记号为 Θ(……),但一般写成O(……) 约定  省略系数O(100n)&#x3D;O(10n)&#x3D;O(12\frac{1}{2}21​n)&#x3D;O(n). log底数省略">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JC1 排序模拟枚举">
+<meta property="og:url" content="https://0a1v37.coding-pages.com/2020/04/09/JC1/index.html">
+<meta property="og:site_name" content="墨宇的博客">
+<meta property="og:description" content="1.排序模拟枚举  复杂度  一般（最坏）复杂度 ：记号为 O(……) 均摊复杂度  \qquad\quad\, ：记号为 Θ(……),但一般写成O(……) 约定  省略系数O(100n)&#x3D;O(10n)&#x3D;O(12\frac{1}{2}21​n)&#x3D;O(n). log底数省略">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU0ajBjaThuOW52dm4zNTNuMC5naWY">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU1aDBhdDEzMWZrejMzajFhZi5naWY">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/1391679/201806/1391679-20180618163321525-1936669878.gif">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1653262/202001/1653262-20200123085200050-668412306.png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU3Z2tybmtrc3BwcG90b3Jrcy5naWY">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1653262/202001/1653262-20200130133815952-2119019624.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/pic/60.png">
+<meta property="article:published_time" content="2020-04-09T06:55:28.149Z">
+<meta property="article:modified_time" content="2020-04-09T12:34:21.804Z">
+<meta property="article:author" content="墨宇">
+<meta property="article:tag" content="洛谷笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU0ajBjaThuOW52dm4zNTNuMC5naWY">
+
+<link rel="canonical" href="https://0a1v37.coding-pages.com/2020/04/09/JC1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JC1 排序模拟枚举 | 墨宇的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="墨宇的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">墨宇的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://0a1v37.coding-pages.com/2020/04/09/JC1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="墨宇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="墨宇的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JC1 排序模拟枚举
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-09 14:55:28 / 修改时间：20:34:21" itemprop="dateCreated datePublished" datetime="2020-04-09T14:55:28+08:00">2020-04-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1排序模拟枚举"><a class="markdownIt-Anchor" href="#1排序模拟枚举"></a> 1.排序模拟枚举</h1>
+<h2 id="复杂度"><a class="markdownIt-Anchor" href="#复杂度"></a> 复杂度</h2>
+<ul>
+<li>一般（最坏）复杂度 ：记号为 O(……)<br />
+均摊复杂度 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="2em"/><mspace width="1em"/><mtext> </mtext></mrow><annotation encoding="application/x-tex">\qquad\quad\,</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span></span></span></span> ：记号为 Θ(……),但一般写成O(……)</li>
+<li>约定
+<ol>
+<li>省略系数O(100n)=O(10n)=O(<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>n)=O(n).</li>
+<li>log底数省略</li>
+</ol>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="排序"><a class="markdownIt-Anchor" href="#排序"></a> 排序</h2>
+<ul>
+<li>选择排序<br />
+这个大家都会，就不详细解释了 <s>（逃</s></li>
+</ul>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU0ajBjaThuOW52dm4zNTNuMC5naWY" alt="选择" title="选择排序" /></p>
+<ul>
+<li>插入排序</li>
+</ul>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU1aDBhdDEzMWZrejMzajFhZi5naWY" alt="插入" title="插入" /></p>
+<ul>
+<li>冒泡排序</li>
+</ul>
+<p><img src="https://images2018.cnblogs.com/blog/1391679/201806/1391679-20180618163321525-1936669878.gif" alt="冒泡" title="冒泡排序" /></p>
+<ul>
+<li>
+<p>归并排序</p>
+<p>详情请见<a href="https://www.cnblogs.com/lhy-cblog/p/merge-sort.html" target="_blank" rel="noopener">点我</a></p>
+</li>
+</ul>
+<p><img src="https://img2018.cnblogs.com/blog/1653262/202001/1653262-20200123085200050-668412306.png" alt="归并1" title="归并1" /></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9mb3J1bS5taWFuYmFvYmFuLmNuL2RhdGEvYXR0YWNobWVudC9mb3J1bS8yMDE4MDMvMjAvMTQwMTU3Z2tybmtrc3BwcG90b3Jrcy5naWY" alt="归并2" title="归并2" /></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ms</span><span class="params">(<span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(e-b &lt;= <span class="number">0</span>) <span class="keyword">return</span> ;</span><br><span class="line">	<span class="keyword">int</span> m = (b + e) / <span class="number">2</span>, p1 = b, p2 = m+<span class="number">1</span>,   i = b;</span><br><span class="line">	ms(b, m); ms(m+<span class="number">1</span>, e);</span><br><span class="line">	<span class="keyword">while</span>(p1 &lt;= m || p2 &lt;= e)</span><br><span class="line">		<span class="keyword">if</span>(p2 &gt; e || (p1 &lt;= m &amp;&amp; a[p1] &lt;= a [p2]))</span><br><span class="line">			t[i++] = a[p1++];</span><br><span class="line">			<span class="keyword">else</span> t[i++] = a[p2++];</span><br><span class="line">	<span class="keyword">for</span>(i = b; i &lt;= e; ++i) a[i] = t[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>快速排序</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">Sort</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i  = l, j = r, x = a[(l + r)/ <span class="number">2</span>];</span><br><span class="line">	<span class="keyword">do</span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(a[i] &lt; x) ++i; <span class="keyword">while</span>(a[j] &gt; x) --j;</span><br><span class="line">		<span class="keyword">if</span>(i &lt;= j) swap(a[i++], a[j--]);</span><br><span class="line">	&#125;<span class="keyword">while</span>(i &lt; j);</span><br><span class="line">	<span class="keyword">if</span>(i &lt; r) Sort(i, r); <span class="keyword">if</span>(j &gt; l) Sort(l, j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="模拟"><a class="markdownIt-Anchor" href="#模拟"></a> 模拟</h2>
+<p>模拟，顾名思义，就是题目让你干嘛你就干嘛。</p>
+<h3 id="例题-校门外的树"><a class="markdownIt-Anchor" href="#例题-校门外的树"></a> 例题 校门外的树</h3>
+<p><img src="https://img2018.cnblogs.com/blog/1653262/202001/1653262-20200130133815952-2119019624.png" alt="" /></p>
+<p>思路：可以建一个数组，保存地铁每一个位置的情况，每次输入l,r，就把这个数组[l,r]部分都变成1，最后再统计有多少0即可</p>
+<p>代码如下（勿喷）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">10010</span>;</span><br><span class="line"><span class="keyword">int</span> tree[maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> l,m,b,e,ans = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">cin</span>&gt;&gt;l&gt;&gt;m;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; m;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cin</span>&gt;&gt;b&gt;&gt;e;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = b;j &lt;= e;j++)</span><br><span class="line">			tree[j] = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt;= l;i++)</span><br><span class="line">		ans+=!tree[i];</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="枚举"><a class="markdownIt-Anchor" href="#枚举"></a> 枚举</h2>
+<p>枚举，顾名思义，就是把所有可能的情况都试一遍直到找到正确的答案。</p>
+<h3 id="例题-p1219-八皇后"><a class="markdownIt-Anchor" href="#例题-p1219-八皇后"></a> 例题 P1219 八皇后</h3>
+<p>【题目描述】</p>
+<p>一个如下的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>×</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">6×6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">6</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">6</span></span></span></span> 的跳棋棋盘，有六个棋子被放置在棋盘上，使得每行、每列有且只有一个，每条对角线（包括两条主对角线的所有平行线）上至多有一个棋子。<br />
+<img src="https://cdn.luogu.com.cn/upload/pic/60.png" alt="" /><br />
+上面的布局可以用序列<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mtext> </mtext><mn>4</mn><mtext> </mtext><mn>6</mn><mtext> </mtext><mn>1</mn><mtext> </mtext><mn>3</mn><mtext> </mtext><mn>5</mn></mrow><annotation encoding="application/x-tex">2\ 4\ 6\ 1\ 3\ 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace"> </span><span class="mord">4</span><span class="mspace"> </span><span class="mord">6</span><span class="mspace"> </span><span class="mord">1</span><span class="mspace"> </span><span class="mord">3</span><span class="mspace"> </span><span class="mord">5</span></span></span></span>来描述，第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span> 个数字表示在第 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span> 行的相应位置有一个棋子，如下：</p>
+<p>行号 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mtext> </mtext><mn>2</mn><mtext> </mtext><mn>3</mn><mtext> </mtext><mn>4</mn><mtext> </mtext><mn>5</mn><mtext> </mtext><mn>6</mn></mrow><annotation encoding="application/x-tex">1\ 2\ 3\ 4\ 5\ 6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace"> </span><span class="mord">2</span><span class="mspace"> </span><span class="mord">3</span><span class="mspace"> </span><span class="mord">4</span><span class="mspace"> </span><span class="mord">5</span><span class="mspace"> </span><span class="mord">6</span></span></span></span></p>
+<p>列号 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mtext> </mtext><mn>4</mn><mtext> </mtext><mn>6</mn><mtext> </mtext><mn>1</mn><mtext> </mtext><mn>3</mn><mtext> </mtext><mn>5</mn></mrow><annotation encoding="application/x-tex">2\ 4\ 6\ 1\ 3\ 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace"> </span><span class="mord">4</span><span class="mspace"> </span><span class="mord">6</span><span class="mspace"> </span><span class="mord">1</span><span class="mspace"> </span><span class="mord">3</span><span class="mspace"> </span><span class="mord">5</span></span></span></span></p>
+<p>这只是棋子放置的一个解。请编一个程序找出所有棋子放置的解。<br />
+并把它们以上面的序列方法输出，解按字典顺序排列。<br />
+请输出前 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 个解。最后一行是解的总个数。<br />
+【输入格式】<br />
+一行一个正整数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>，表示棋盘是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n \times n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span> 大小的。<br />
+【输出格式】<br />
+前三行为前三个解，每个解的两个数字之间用一个空格隔开。第四行只有一个数字，表示解的总数。<br />
+输入输出样例</p>
+<h3 id="输入-1-qquadqquadqquad-输出-1"><a class="markdownIt-Anchor" href="#输入-1-qquadqquadqquad-输出-1"></a> 输入 #1  <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/></mrow><annotation encoding="application/x-tex">\qquad\qquad\qquad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span></span></span></span> 输出 #1</h3>
+<p>6  <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="1em"/></mrow><annotation encoding="application/x-tex">\qquad\qquad\qquad\qquad\qquad\qquad\quad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:1em;"></span></span></span></span> 2 4 6 1 3 5<br />
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="1em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="1em"/></mrow><annotation encoding="application/x-tex">\quad\qquad\qquad\qquad\qquad\qquad\qquad\quad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:1em;"></span></span></span></span> 3 6 2 5 1 4<br />
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="1em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="1em"/></mrow><annotation encoding="application/x-tex">\quad\qquad\qquad\qquad\qquad\qquad\qquad\quad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:1em;"></span></span></span></span> 4 1 5 2 6 3<br />
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="1em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="1em"/></mrow><annotation encoding="application/x-tex">\quad\qquad\qquad\qquad\qquad\qquad\qquad\quad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:1em;"></span></span></span></span> 4</p>
+<p>【数据范围】<br />
+对于 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>100</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">100\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80556em;vertical-align:-0.05556em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">%</span></span></span></span> 的数据，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>6</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>136</mn></mrow><annotation encoding="application/x-tex">6 \leq n \leq 136</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="mord">6</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">3</span><span class="mord">6</span></span></span></span></p>
+<p>USACO Training Section 1.5</p>
+<p>代码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> tot = <span class="number">0</span>,n;</span><br><span class="line"><span class="keyword">int</span> C[<span class="number">10000</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> vis[<span class="number">10000</span>][<span class="number">10000</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt;ans;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span> cur)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (cur == n)</span><br><span class="line">	&#123;</span><br><span class="line">		tot++;</span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			v.push_back(C[i]);</span><br><span class="line">		&#125;</span><br><span class="line">		ans.push_back(v);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!vis[<span class="number">0</span>][i] &amp;&amp; !vis[<span class="number">1</span>][cur + i] &amp;&amp; !vis[<span class="number">2</span>][cur - i + n])</span><br><span class="line">		&#123;</span><br><span class="line">			C[cur] = i;</span><br><span class="line">			vis[<span class="number">0</span>][i] = vis[<span class="number">1</span>][cur + i] = vis[<span class="number">2</span>][cur - i + n] = <span class="number">1</span>;</span><br><span class="line">			search(cur + <span class="number">1</span>);</span><br><span class="line">			vis[<span class="number">0</span>][i] = vis[<span class="number">1</span>][cur + i] = vis[<span class="number">2</span>][cur - i + n] = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; a, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.size() &amp;&amp; i &lt; b.size(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (a[i] != b[i])<span class="keyword">return</span> a[i] &lt; b[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> a.size() &lt; b.size();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">	search(<span class="number">0</span>);</span><br><span class="line">	sort(ans.begin(), ans.end(), cmp);</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt;::iterator it1 = ans.begin(); it1 != ans.end(); it1++,i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!(i &lt; <span class="number">3</span>))<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it2 = it1-&gt;begin(); it2 != it1-&gt;end(); it2++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; (*it2)+<span class="number">1</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; tot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>你的支持是我写作的最大动力</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="墨宇 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="墨宇 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B4%9B%E8%B0%B7%E7%AC%94%E8%AE%B0/" rel="tag"># 洛谷笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/09/JC2/" rel="prev" title="JC2 递推，递归与分治">
+      <i class="fa fa-chevron-left"></i> JC2 递推，递归与分治
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/09/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E9%80%86%E5%BA%8F%E5%AF%B9-%E5%BF%AB%E8%AF%BB/" rel="next" title="归并排序逆序对+快读">
+      归并排序逆序对+快读 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1排序模拟枚举"><span class="nav-number">1.</span> <span class="nav-text"> 1.排序模拟枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度"><span class="nav-number">1.1.</span> <span class="nav-text"> 复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序"><span class="nav-number">1.2.</span> <span class="nav-text"> 排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟"><span class="nav-number">1.3.</span> <span class="nav-text"> 模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例题-校门外的树"><span class="nav-number">1.3.1.</span> <span class="nav-text"> 例题 校门外的树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举"><span class="nav-number">1.4.</span> <span class="nav-text"> 枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例题-p1219-八皇后"><span class="nav-number">1.4.1.</span> <span class="nav-text"> 例题 P1219 八皇后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入-1-qquadqquadqquad-输出-1"><span class="nav-number">1.4.2.</span> <span class="nav-text"> 输入 #1  \qquad\qquad\qquad 输出 #1</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">墨宇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/MoyuSteve" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MoyuSteve" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:MoyuSteve@outlook.com" title="E-Mail → mailto:MoyuSteve@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/13221255/moyusteve" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;13221255&#x2F;moyusteve" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://xiaxiaoguang.github.io/" title="http:&#x2F;&#x2F;xiaxiaoguang.github.io" rel="noopener" target="_blank">xiaxiaoguang</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">墨宇</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css">
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '36b1bf65e647e754ff04',
+      clientSecret: '1c5453461695403a34b9ce4854a7450f3e531ae1',
+      repo        : 'gittalk',
+      owner       : 'MoyuSteve',
+      admin       : ['MoyuSteve'],
+      id          : 'ede1d777cf63ed14a245f7ac397b588c',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

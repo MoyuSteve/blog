@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"0a1v37.coding-pages.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这是我第一次写博客，请多指教！ vector是一种向量容器，说白了就是可以改变大小的数组。 vector是一个模板类，如果直接这样会报错： 1vector a; &#x2F;&#x2F;报错，因为要指定模板。 需要像这样：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vector">
+<meta property="og:url" content="https://0a1v37.coding-pages.com/2020/04/09/Vector/index.html">
+<meta property="og:site_name" content="墨宇的博客">
+<meta property="og:description" content="这是我第一次写博客，请多指教！ vector是一种向量容器，说白了就是可以改变大小的数组。 vector是一个模板类，如果直接这样会报错： 1vector a; &#x2F;&#x2F;报错，因为要指定模板。 需要像这样：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://0a1v37.coding-pages.com/2020/04/09/Vector/Pictures/10000201000002DA000001DE39091E0CCD706666.png">
+<meta property="article:published_time" content="2020-04-09T07:05:18.000Z">
+<meta property="article:modified_time" content="2020-04-09T07:53:12.360Z">
+<meta property="article:author" content="墨宇">
+<meta property="article:tag" content="心得分享">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0a1v37.coding-pages.com/2020/04/09/Vector/Pictures/10000201000002DA000001DE39091E0CCD706666.png">
+
+<link rel="canonical" href="https://0a1v37.coding-pages.com/2020/04/09/Vector/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vector | 墨宇的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="墨宇的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">墨宇的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://0a1v37.coding-pages.com/2020/04/09/Vector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="墨宇">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="墨宇的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vector
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-09 15:05:18 / 修改时间：15:53:12" itemprop="dateCreated datePublished" datetime="2020-04-09T15:05:18+08:00">2020-04-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这是我第一次写博客，请多指教！</p>
+<p>vector是一种向量容器，说白了就是可以改变大小的数组。</p>
+<p>vector是一个模板类，如果直接这样会报错：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span> a; <span class="comment">//报错，因为要指定模板。</span></span><br></pre></td></tr></table></figure>
+<p>需要像这样：</p>
+<a id="more"></a>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line">       ^<span class="comment">/*这里可以改成别的类型,float,long等等......*/</span></span><br></pre></td></tr></table></figure>
+<p>那么，什么是 <em><strong><strong>模板</strong></strong></em> 呢？</p>
+<blockquote>
+<p>模板是C++支持<strong>参数化</strong>多态的工具，使用模板可以使用户为类或者函数声明一种一般模式，使得类中的某些数据成员或者成<br />
+员函数的参数、返回值取得任意类型。</p>
+</blockquote>
+<blockquote>
+<p>模板是一种对<strong>类型</strong>进行<strong>参数化</strong>的工具；</p>
+</blockquote>
+<blockquote>
+<p>通常有两种形式：<strong>函数模板</strong>和<strong>类模板</strong>；</p>
+</blockquote>
+<blockquote>
+<p>函数模板针对仅<strong>参数类型</strong>不同的<strong>函数</strong>；</p>
+</blockquote>
+<blockquote>
+<p>类模板针对仅<strong>数据成员</strong>和<strong>成员函数类型</strong>不同的类。</p>
+</blockquote>
+<blockquote>
+<p>**使用模板的目的就是能够让程序员编写与类型无关的代码。**比如编写了一个交换两个整型int</p>
+</blockquote>
+<blockquote>
+<p>类型的swap函数，这个函数就只能实现<strong>int</strong></p>
+</blockquote>
+<blockquote>
+<p>型，对<strong>double</strong>，字符这些类型无法实现，要实现这些类型的交换就要重新编写另一个<strong>swap</strong>函数。使用模板的目的就是<br />
+要让这程序的实现与类型无关，比如一个<strong>swap</strong>模板函数，即可以实现<strong>int</strong></p>
+</blockquote>
+<blockquote>
+<p>型，又可以实现double型的交换。模板可以应用于函数和类。下面分别介绍。</p>
+</blockquote>
+<blockquote>
+<p><strong>注意：模板的声明或定义只能在全局，命名空间或类范围内进行。即不能在局部范围，函数内进行，比如不能在main函数中<br />
+声明或定义一个模板。</strong></p>
+</blockquote>
+<p><strong>具体的请看------------------------------------&gt;</strong>[点我点我!](<a href="http://www" target="_blank" rel="noopener">http://www</a>.<br />
+<a href="http://cnblogs.com/gw811/archive/2012/10/25/2736224.html" target="_blank" rel="noopener">cnblogs.com/gw811/archive/2012/10/25/2736224.html</a>)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在此就不多讲了。</span><br><span class="line"></span><br><span class="line">C++<span class="built_in">vector</span>函数:</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span>:</span></span><br><span class="line"><span class="function"></span></span><br><span class="line">作用：获取vector大小。</span><br><span class="line"></span><br><span class="line">resize(<span class="keyword">int</span> x)</span><br><span class="line"></span><br><span class="line">作用：变长为x。</span><br><span class="line"></span><br><span class="line">clear()</span><br><span class="line"></span><br><span class="line">作用：清空<span class="built_in">vector</span>。</span><br><span class="line"></span><br><span class="line">push_back(),pop_back():</span><br><span class="line"></span><br><span class="line">栈操作。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>                 <span class="comment">// 创建一个空的vector。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span> <span class="title">c1</span><span class="params">(c2)</span>          <span class="comment">// 复制一个vector</span></span></span><br><span class="line"><span class="function"><span class="built_in">vector</span> <span class="title">c</span><span class="params">(n)</span>            <span class="comment">// 创建一个vector，含有n个数据，数据均已缺省构造产生</span></span></span><br><span class="line"><span class="function"><span class="built_in">vector</span> <span class="title">c</span><span class="params">(n, elem)</span>      <span class="comment">// 创建一个含有n个elem拷贝的vector</span></span></span><br><span class="line"><span class="function"><span class="built_in">vector</span> <span class="title">c</span><span class="params">(beg,end)</span>      <span class="comment">// 创建一个含有n个elem拷贝的vector</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line">1. 析构函数</span><br><span class="line">c.~<span class="built_in">vector</span> ()           <span class="comment">// 销毁所有数据，释放内存</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 成员函数</span><br><span class="line">c.assign(beg,end)c.assign(n,elem)</span><br><span class="line">　　将[beg; end)区间中的数据赋值给c。将n个elem的拷贝赋值给c。</span><br><span class="line">c.at(idx)</span><br><span class="line">　　传回索引idx所指的数据，如果idx越界，抛出out_of_range。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c.back()      <span class="comment">// 传回最后一个数据，不检查这个数据是否存在。</span></span><br><span class="line">c.begin()     <span class="comment">// 传回迭代器中的第一个数据地址。</span></span><br><span class="line">c.capacity()  <span class="comment">// 返回容器中数据个数。</span></span><br><span class="line">c.clear()     <span class="comment">// 移除容器中所有数据。</span></span><br><span class="line">c.empty()     <span class="comment">// 判断容器是否为空。</span></span><br><span class="line">c.end()       <span class="comment">// 指向迭代器中末端元素的下一个，指向一个不存在元素。</span></span><br><span class="line">c.erase(pos)  <span class="comment">// 删除pos位置的数据，传回下一个数据的位置。</span></span><br><span class="line">c.erase(beg,end)  <span class="comment">//删除[beg,end)区间的数据，传回下一个数据的位置。</span></span><br><span class="line">c.front()     <span class="comment">// 传回第一个数据。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">get_allocator <span class="comment">// 使用构造函数返回一个拷贝。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c.insert(pos,elem)    <span class="comment">// 在pos位置插入一个elem拷贝，传回新数据位置。</span></span><br><span class="line">c.insert(pos,n,elem)  <span class="comment">// 在pos位置插入n个elem数据。无返回值。</span></span><br><span class="line">c.insert(pos,beg,end) <span class="comment">// 在pos位置插入在[beg,end)区间的数据。无返回值。</span></span><br><span class="line">　　</span><br><span class="line">c.max_size()       <span class="comment">// 返回容器中最大数据的数量。</span></span><br><span class="line">c.pop_back()       <span class="comment">// 删除最后一个数据。</span></span><br><span class="line">c.push_back(elem)  <span class="comment">// 在尾部加入一个数据。</span></span><br><span class="line">c.rbegin()         <span class="comment">// 传回一个逆向队列的第一个数据。</span></span><br><span class="line">c.rend()           <span class="comment">// 传回一个逆向队列的最后一个数据的下一个位置。</span></span><br><span class="line">c.resize(num)      <span class="comment">// 重新指定队列的长度。</span></span><br><span class="line">c.reserve()        <span class="comment">// 保留适当的容量。</span></span><br><span class="line">c.size()           <span class="comment">// 返回容器中实际数据的个数。</span></span><br><span class="line">c1.swap(c2)</span><br><span class="line">swap(c1,c2)        <span class="comment">// 将c1和c2元素互换。同上操作。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">operator</span>[]         <span class="comment">// 返回容器中指定位置的一个引用。</span></span><br></pre></td></tr></table></figure>
+<p><strong>举个例子吧！</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">    s.resize(<span class="number">10</span>);            <span class="comment">//变长为10</span></span><br><span class="line">    s[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    s[<span class="number">1</span>] = <span class="number">2</span>;</span><br><span class="line">    s[<span class="number">2</span>] = <span class="number">3</span>;</span><br><span class="line">    s[<span class="number">3</span>] = <span class="number">4</span>;</span><br><span class="line">    s[<span class="number">4</span>] = <span class="number">5</span>;</span><br><span class="line">    s[<span class="number">5</span>] = <span class="number">6</span>;</span><br><span class="line">    s[<span class="number">6</span>] = <span class="number">7</span>;</span><br><span class="line">    s[<span class="number">7</span>] = <span class="number">8</span>;</span><br><span class="line">    s[<span class="number">8</span>] = <span class="number">9</span>;</span><br><span class="line">    s[<span class="number">9</span>] = <span class="number">10</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"vector:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = s.cbegin(); i != s.cend(); i++)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *i &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n栈操作push_back加入18\n"</span>;</span><br><span class="line">    s.push_back(<span class="number">18</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = s.cbegin(); i != s.cend(); i++)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *i &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n栈操作push_back加入19\n"</span>;</span><br><span class="line">    s.push_back(<span class="number">19</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = s.cbegin(); i != s.cend(); i++)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *i &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n栈操作pop_back放走了最后的元素:\n"</span>;</span><br><span class="line">    s.pop_back();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = s.cbegin(); i != s.cend(); i++)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *i &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n操作erase(s.begin+3):\n"</span>;</span><br><span class="line">    s.erase(s.begin()+<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = s.cbegin(); i != s.cend(); i++)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; *i &lt;&lt; <span class="string">"  "</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行截图：</p>
+<p><img src="Pictures/10000201000002DA000001DE39091E0CCD706666.png" alt="" /></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>你的支持是我写作的最大动力</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="墨宇 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="墨宇 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BF%83%E5%BE%97%E5%88%86%E4%BA%AB/" rel="tag"># 心得分享</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/09/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E9%80%86%E5%BA%8F%E5%AF%B9-%E5%BF%AB%E8%AF%BB/" rel="prev" title="归并排序逆序对+快读">
+      <i class="fa fa-chevron-left"></i> 归并排序逆序对+快读
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">墨宇</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/MoyuSteve" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MoyuSteve" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:MoyuSteve@outlook.com" title="E-Mail → mailto:MoyuSteve@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/13221255/moyusteve" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;13221255&#x2F;moyusteve" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://xiaxiaoguang.github.io/" title="http:&#x2F;&#x2F;xiaxiaoguang.github.io" rel="noopener" target="_blank">xiaxiaoguang</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">墨宇</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css">
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '36b1bf65e647e754ff04',
+      clientSecret: '1c5453461695403a34b9ce4854a7450f3e531ae1',
+      repo        : 'gittalk',
+      owner       : 'MoyuSteve',
+      admin       : ['MoyuSteve'],
+      id          : 'b876f75d7422cbbfbe85e9d56e8b9be3',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
